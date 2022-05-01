@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style type="text/css">
+        [ng\:cloak],
+        [ng-cloak],
+        [data-ng-cloak],
+        [x-ng-cloak],
+        .ng-cloak,
+        .x-ng-cloak {
+            display: none !important;
+        }
+    </style>
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.2.3/animate.min.css">
+
+    <link rel="stylesheet" href="style.css">
+
+    <title>Document</title>
+</head>
+
+
+<body ng-app="memorygame" ng-controller="AppController">
+    <header>
+        <button class="settings-button" ng-click="data.showSettings=!data.showSettings"><i
+                class="zmdi zmdi-settings"></i></button>
+    </header>
+    <main ng-if="data.gameStarted" ng-cloak>
+        <div class="headline">
+            <h1>COSD Memory Game</h1>
+            <button ng-click="start()" ng-disabled="disableBtn" >start game</button>
+        </div>
+        <div class="statistics">
+            <h3>Difficulty : <span>{{data.level}}</span></h3>
+            <h3>Moves : <span>{{data.moves}}</span></h3>
+            <h3>Time : <span>{{timer / 1000}}</span></h3>
+        </div>
+        <section class="row" ng-repeat="rows in data.tiles" ng-disabled="disableGame">
+            <figure class="tile" ng-repeat="tile in rows"
+                ng-class="{loaded:tile.loaded, flipped:tile.flipped, paired:tile.paired}">
+                <div class="faces" ng-model="tile" tile>
+                    <div class="back"></div>
+                    <div class="front"><i class="zmdi zmdi-{{tile.icon}}"></i></div>
+                </div>
+            </figure>
+        </section>
+    </main>
+    <div class="backdrop" ng-class="{show:!data.gameStarted || data.showSettings, gameover:data.gameOver}">
+        <dialog>
+            <div class="score">
+                <h1>Game over!</h1>
+                <h4>Your score: {{data.score}}</h4>
+                <button ng-click="data.gameOver=false;reset()">Play Again</button>
+            </div>
+            <div class="settings">
+                <p>Pick a difficulty</p>
+                <button ng-click="service.startGame('easy')">Easy</button>
+                <button ng-click="service.startGame('medium')">Medium</button>
+                <button ng-click="service.startGame('hard')">Hard</button>
+            </div>
+        </dialog>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.1/angular.min.js"></script>
+    <script src="https://code.angularjs.org/1.4.1/angular-animate.js"></script>
+
+    <script src="module.js"></script>
+
+</body>
+
+</html>
